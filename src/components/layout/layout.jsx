@@ -27,14 +27,13 @@ const Layout = () => {
   }
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh" }}>
+    <div style={{ display: "flex" }}>
       {/* Sidebar fixe */}
       <Sidebar />
 
       {/* Contenu principal */}
       <main
         style={{
-          flex: 1,
           display: "flex",
           justifyContent: "center",
           position: "relative",
@@ -77,7 +76,6 @@ const Layout = () => {
         {/* Contenu réel centré */}
         <div style={{
           
-          position: "relative", 
           zIndex: 1, 
           width: "100%", 
           maxWidth: "500px",
