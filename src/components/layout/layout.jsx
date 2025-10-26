@@ -1,57 +1,58 @@
-// src/components/Layout.js
 import React from "react";
 import { Outlet } from "react-router-dom";
-import Sidebar from "../sidebar/sidebar";
+import Sidebar from "../Sidebar/Sidebar";
 
 const Layout = () => {
-  const lampSize = 200; 
-  const lampCount = 10; 
-  const sidebarWidth = 250; // largeur du sidebar
-  const mainWidth = window.innerWidth - sidebarWidth;
-  const mainHeight = window.innerHeight;
+  const lampSize = 200;
+  const lampCount = 10;
+  const sidebarWidth = 250;
+  
+  // Calcul des dimensions pour les lampes sur toute la fenêtre
+  const windowWidth = window.innerWidth;
+  const windowHeight = window.innerHeight;
 
   const lamps = [];
-
-  // Placer les lampes de façon régulière horizontalement et verticalement
-  const gapX = mainWidth / lampCount;
-  const gapY = mainHeight / (lampCount / 2);
+  const gapX = windowWidth / lampCount;
+  const gapY = windowHeight / (lampCount / 2);
 
   for (let i = 0; i < lampCount; i++) {
-    const x = sidebarWidth + i * gapX;
-    const y = (i % 2) * gapY + gapY / 4; // alterner verticalement pour éviter chevauchement
-
+    const x = i * gapX;
+    const y = (i % 2) * gapY + gapY / 4;
     lamps.push({
       left: x,
       top: y,
-      rotate: Math.random() * 360 - 180, // rotation aléatoire
+      rotate: Math.random() * 360 - 180,
       opacity: 0.15 + Math.random() * 0.1,
     });
   }
 
   return (
     <div style={{ display: "flex", minHeight: "100vh" }}>
- 
+      {/* Sidebar fixe */}
+      <Sidebar />
 
+      {/* Contenu principal */}
       <main
         style={{
           flex: 1,
           display: "flex",
           justifyContent: "center",
-          alignItems: "flex-start",
-          backgroundColor: "#F0F8FF",
-          padding: "100px 20px",
           position: "relative",
           overflow: "hidden",
+          minHeight: "100vh",
+          padding: "20px",
+          marginLeft: `${sidebarWidth}px`,
+          width: `calc(100% - ${sidebarWidth}px)`
         }}
       >
-        {/* Fond lampes */}
+        {/* Fond lampes - positionné sur toute la fenêtre */}
         <div
           style={{
-            position: "absolute",
+            position: "fixed",
             top: 0,
             left: 0,
-            width: "100%",
-            height: "100%",
+            width: "100vw",
+            height: "100vh",
             pointerEvents: "none",
             zIndex: 0,
           }}
@@ -60,6 +61,7 @@ const Layout = () => {
             <div
               key={index}
               style={{
+                position: "absolute",
                 top: lamp.top,
                 left: lamp.left,
                 fontSize: lampSize,
@@ -71,9 +73,16 @@ const Layout = () => {
             </div>
           ))}
         </div>
-     <Sidebar />
-        {/* Contenu */}
-        <div style={{ position: "relative", zIndex: 1 }}>
+
+        {/* Contenu réel centré */}
+        <div style={{
+          
+          position: "relative", 
+          zIndex: 1, 
+          width: "100%", 
+          maxWidth: "500px",
+          alignItems: "center"
+        }}>
           <Outlet />
         </div>
       </main>
