@@ -1,16 +1,17 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home/Home";
+import QRCodeGenerator from "./pages/QRCodeGenerator/QRCodeGenerator";
 import CreateSheet from "./pages/CreateSheet/CreateSheet";
-import Sidebar from "./components/Sidebar/Sidebar";
+import Layout from "./components/layout/layout";
 
 function App() {
   return (
     <Router>
-      <Sidebar />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/create" element={<CreateSheet />} />
+        <Route path="/" element={<Layout />}>
+          <Route index element={<QRCodeGenerator />} />
+          <Route path="create" element={<CreateSheet />} />
+        </Route>
       </Routes>
     </Router>
   );

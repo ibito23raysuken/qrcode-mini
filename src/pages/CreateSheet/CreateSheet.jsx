@@ -1,55 +1,5 @@
 import React, { useState } from "react";
-
-// 🔹 Composant Modal réutilisable
-const Modal = ({ show, title, children, onClose }) => {
-  if (!show) return null;
-  return (
-    <div
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: "rgba(0,0,0,0.5)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        zIndex: 9999,
-      }}
-    >
-      <div
-        style={{
-          backgroundColor: "white",
-          padding: "20px",
-          borderRadius: "10px",
-          width: "450px",
-          maxWidth: "90%",
-          boxShadow: "0 4px 15px rgba(0,0,0,0.3)",
-          maxHeight: "80vh",
-          overflowY: "auto",
-        }}
-      >
-        <h2 style={{ marginTop: 0, color: "#1877f2" }}>{title}</h2>
-        <div>{children}</div>
-        <button
-          onClick={onClose}
-          style={{
-            marginTop: "20px",
-            padding: "10px 20px",
-            backgroundColor: "#1877f2",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-          }}
-        >
-          Fermer
-        </button>
-      </div>
-    </div>
-  );
-};
+import Modal from "../../components/modal/modal";
 
 // 🔹 Composant principal
 const CreateSheet = () => {
@@ -74,7 +24,6 @@ const CreateSheet = () => {
 
       const response = await fetch(url);
       const data = await response.json();
-      console.log("📡 Requête :", data);
       if (data.success) {
         const createdList = (data.created || []).map((s) => (
           <li key={s.name}>
@@ -129,11 +78,10 @@ const CreateSheet = () => {
           </div>
         );
       } else {
-        console.log("📡 Requête :", data);
         setModalContent(<div>Erreur : {data.error}</div>);
       }
     } catch (err) {
-      console.error("Erreur réseau :", err);
+      
       setModalContent(
         <div>Erreur réseau, vérifie ton Apps Script et sa publication.</div>
       );
@@ -143,77 +91,100 @@ const CreateSheet = () => {
   };
 
   return (
-    <div
-      style={{
-        marginTop: "50px",
-        textAlign: "center",
-        fontFamily: "Arial, sans-serif",
-      }}
-    >
-      <h1 style={{ color: "#1877f2" }}>Créer des Feuilles Google Sheets</h1>
+<div
+  style={{
+    marginTop: "50px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    fontFamily: "Arial, sans-serif",
+  }}
+>
+  <div
+    style={{
+      width: "400px",
+      maxWidth: "90%",
+      padding: "30px 25px",
+      borderRadius: "15px",
+      backgroundColor: "#fff",
+      boxShadow: "0 8px 20px rgba(0,0,0,0.1)",
+      textAlign: "center",
+    }}
+  >
+    <h1 style={{ color: "#1877f2", marginBottom: "25px" }}>
+      Créer des Feuilles Google Sheets
+    </h1>
 
-      <div style={{ marginBottom: "20px" }}>
-        <label>
-          Numéro de départ :{" "}
-          <input
-            type="number"
-            value={startNumber}
-            onChange={(e) => setStartNumber(e.target.value)}
-            placeholder="ex: 45"
-            style={{
-              padding: "8px",
-              borderRadius: "5px",
-              border: "1px solid #ccc",
-              width: "100px",
-              textAlign: "center",
-            }}
-          />
-        </label>
-      </div>
-
-      <div style={{ marginBottom: "20px" }}>
-        <label>
-          Nombre de feuilles à créer :{" "}
-          <input
-            type="number"
-            value={count}
-            min="1"
-            onChange={(e) => setCount(Number(e.target.value))}
-            style={{
-              padding: "8px",
-              borderRadius: "5px",
-              border: "1px solid #ccc",
-              width: "60px",
-              textAlign: "center",
-            }}
-          />
-        </label>
-      </div>
-
-      <button
-        onClick={handleCreateSheets}
-        style={{
-          padding: "10px 20px",
-          backgroundColor: "#1877f2",
-          color: "white",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-          fontWeight: "bold",
-        }}
-        disabled={loading}
-      >
-        {loading ? "Création en cours..." : "Créer la(les) feuille(s)"}
-      </button>
-
-      <Modal
-        show={!!modalContent}
-        title="Résultat de la création"
-        onClose={() => setModalContent(null)}
-      >
-        {modalContent}
-      </Modal>
+    <div style={{ marginBottom: "20px" }}>
+      <label style={{ fontWeight: "500" }}>
+        Numéro de départ :{" "}
+        <input
+          type="number"
+          value={startNumber}
+          onChange={(e) => setStartNumber(e.target.value)}
+          placeholder="ex: 45"
+          style={{
+            padding: "8px",
+            borderRadius: "5px",
+            border: "1px solid #ccc",
+            width: "100px",
+            textAlign: "center",
+            marginLeft: "10px",
+          }}
+        />
+      </label>
     </div>
+
+    <div style={{ marginBottom: "20px" }}>
+      <label style={{ fontWeight: "500" }}>
+        Nombre de feuilles à créer :{" "}
+        <input
+          type="number"
+          value={count}
+          min="1"
+          onChange={(e) => setCount(Number(e.target.value))}
+          style={{
+            padding: "8px",
+            borderRadius: "5px",
+            border: "1px solid #ccc",
+            width: "60px",
+            textAlign: "center",
+            marginLeft: "10px",
+          }}
+        />
+      </label>
+    </div>
+
+    <button
+      onClick={handleCreateSheets}
+      style={{
+        padding: "12px 25px",
+        backgroundColor: "#1877f2",
+        color: "white",
+        border: "none",
+        borderRadius: "8px",
+        cursor: "pointer",
+        fontWeight: "bold",
+        fontSize: "16px",
+        transition: "all 0.2s ease",
+      }}
+      disabled={loading}
+      onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#145dbf")}
+      onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#1877f2")}
+    >
+      {loading ? "Création en cours..." : "Créer la(les) feuille(s)"}
+    </button>
+
+    <Modal
+      show={!!modalContent}
+      title="Résultat de la création"
+      onClose={() => setModalContent(null)}
+    >
+      {modalContent}
+    </Modal>
+  </div>
+</div>
+
   );
 };
 
