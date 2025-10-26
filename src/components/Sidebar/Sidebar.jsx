@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiFilePlus } from "react-icons/fi";
 import { FaQrcode } from "react-icons/fa";
-import "./sidebar.css";
+import "./Sidebar.css";
 
 const MenuItem = ({ icon, label, expanded, onClick }) => (
   <div className="menu-item" onClick={onClick}>
